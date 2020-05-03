@@ -1,8 +1,9 @@
 import React from 'react';
-import {View, StyleSheet, Dimensions} from 'react-native';
+import {View, StyleSheet, Dimensions, Button, Alert} from 'react-native';
 import {LineChart} from 'react-native-chart-kit';
 import Text from "react-native-paper/src/components/Typography/Text";
 import { Bubbles, DoubleBounce, Bars, Pulse } from 'react-native-loader';
+
 
 export default class StockView extends React.Component {
 
@@ -96,6 +97,14 @@ export default class StockView extends React.Component {
                 /> : <Bars size={20} color="#FDAAFF" />}
                 <Text
                     style={styles.textHeaderStyle}> {this.props.navigation.state.params.ListViewClickItemHolder["1. symbol"]} </Text>
+                <View style={styles.buttonsContainer}>
+                    <View style={styles.buttonContainer}>
+                        <Button color={'#2ecc71'} title="BUY" onPress={() => Alert.alert('Buy button pressed')}/>
+                    </View>
+                    <View style={styles.buttonContainer}>
+                        <Button color={'#e74c3c'} title="SELL" onPress={() => Alert.alert('Sell button pressed')}/>
+                    </View>
+                </View>
             </View>
         );
     }
@@ -104,6 +113,7 @@ export default class StockView extends React.Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
     },
@@ -112,4 +122,15 @@ const styles = StyleSheet.create({
         fontSize: 20,
         textTransform: 'uppercase'
     },
+    buttonsContainer: {
+        flex: 1,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        position:'absolute',
+        bottom:0
+    },
+    buttonContainer: {
+        flex: 1,
+    }
 });
