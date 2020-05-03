@@ -6,11 +6,6 @@ import ScreenName from '../components/ScreenName.js'
 
 export default class Profile extends React.Component {
 
-    // we won't need to configure navigationOptions just yet
-    static navigationOptions = {
-
-    };
-
     render() {
         return (
             <View style={styles.container}>
