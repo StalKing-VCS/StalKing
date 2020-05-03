@@ -2,7 +2,7 @@ import React from 'react';
 import {View, StyleSheet, Dimensions, Button, Alert} from 'react-native';
 import {LineChart} from 'react-native-chart-kit';
 import Text from "react-native-paper/src/components/Typography/Text";
-import { Bubbles, DoubleBounce, Bars, Pulse } from 'react-native-loader';
+import {Bubbles, DoubleBounce, Bars, Pulse} from 'react-native-loader';
 
 
 export default class StockView extends React.Component {
@@ -17,6 +17,7 @@ export default class StockView extends React.Component {
             symbol: props.navigation.state.params.ListViewClickItemHolder["1. symbol"],
             loading: false,
             error: null,
+            unfilteredChartData: undefined,
             chartData: undefined
         };
     }
@@ -27,6 +28,30 @@ export default class StockView extends React.Component {
             dataValues.push(data[x]["4. close"]);
         }
         return dataValues
+    }
+
+    jsonCopy(src) {
+        return JSON.parse(JSON.stringify(src));
+    }
+
+    filterDataForRange(number) {
+        const unfilteredChartData = this.jsonCopy(this.state.unfilteredChartData);
+        let filteredData = unfilteredChartData;
+        if(number === 7){
+            filteredData["labels"] = unfilteredChartData.labels.slice(0,7);
+            filteredData["datasets"][0]["data"] = unfilteredChartData.datasets[0].data.slice(0,7)
+        } else if(number === 28){
+            filteredData["labels"] = unfilteredChartData.labels.slice(0,28);
+            filteredData["datasets"][0]["data"] = unfilteredChartData.datasets[0].data.slice(0,28)
+        }else{
+            filteredData = unfilteredChartData;
+        }
+        filteredData.labels = filteredData.labels.reverse();
+        filteredData.datasets[0].data = filteredData.datasets[0].data.reverse();
+
+        this.setState({
+            chartData : filteredData
+        })
     }
 
     getStockdata() {
@@ -50,6 +75,7 @@ export default class StockView extends React.Component {
                     data: dailyData,
                     error: res.error || null,
                     loading: false,
+                    unfilteredChartData: chartData,
                     chartData: chartData
                 });
             })
@@ -64,18 +90,24 @@ export default class StockView extends React.Component {
     }
 
     formatDateTime(dt) {
-        return dt.substring(0, 2)
+        return dt.substring(8, 10)
     }
-
 
     render() {
         return (
             <View style={styles.container}>
+                {this.state.chartData &&
+                <View style={styles.filterContainer}>
+                    <Button color={'#000'} title="1W" onPress={() => this.filterDataForRange(7)}/>
+                    <Button color={'#000'} title="4W" onPress={() => this.filterDataForRange(28)}/>
+                    <Button color={'#000'} title="All" onPress={() => this.filterDataForRange(0)}/>
+                </View>
+                }
                 {this.state.chartData ? <LineChart
                     data={this.state.chartData}
                     width={Dimensions.get('window').width - 10}
                     height={Dimensions.get('window').height / 2}
-                    verticalLabelRotation={135}
+                    verticalLabelRotation={45}
                     formatXLabel={this.formatDateTime}
                     withInnerLines={false}
                     chartConfig={{
@@ -94,7 +126,7 @@ export default class StockView extends React.Component {
                         marginVertical: 8,
                         borderRadius: 5
                     }}
-                /> : <Bars size={20} color="#FDAAFF" />}
+                /> : <Bars size={20} color="#FDAAFF"/>}
                 <Text
                     style={styles.textHeaderStyle}> {this.props.navigation.state.params.ListViewClickItemHolder["1. symbol"]} </Text>
                 <View style={styles.buttonsContainer}>
@@ -108,6 +140,7 @@ export default class StockView extends React.Component {
             </View>
         );
     }
+
 }
 
 const styles = StyleSheet.create({
@@ -127,10 +160,20 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
-        position:'absolute',
-        bottom:0
+        position: 'absolute',
+        bottom: 0
     },
     buttonContainer: {
         flex: 1,
+    },
+    filterContainer: {
+        flex: 1,
+        flexDirection: 'row',
+        alignItems: 'flex-end',
+        justifyContent: 'flex-end',
+        position: 'absolute',
+        top: 0,
+        backgroundColor:'#000',
+        width:'100%'
     }
 });
