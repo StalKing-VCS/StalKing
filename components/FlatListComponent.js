@@ -22,7 +22,7 @@ class FlatListComponent extends React.Component {
     }
 
     updateSearch = search => {
-        this.setState({ search });
+        this.setState({ search, loading: true });
         this.makeSearchRequest(search);
     };
 
@@ -72,6 +72,22 @@ class FlatListComponent extends React.Component {
             lightTheme/>;
     };
 
+    renderFooter = () => {
+        if (!this.state.loading) return null;
+
+        return (
+            <View
+                style={{
+                    paddingVertical: 20,
+                    borderTopWidth: 1,
+                    borderColor: "#CED0CE"
+                }}
+            >
+                <ActivityIndicator animating size="large" />
+            </View>
+        );
+    };
+
     render() {
         return (
                 <FlatList
@@ -92,6 +108,7 @@ class FlatListComponent extends React.Component {
                     keyExtractor={item => item.email}
                     ItemSeparatorComponent={this.renderSeparator}
                     ListHeaderComponent={this.renderHeader}
+                    ListFooterComponent={this.renderFooter}
                 />
         );
     }
