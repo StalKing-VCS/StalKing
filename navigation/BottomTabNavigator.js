@@ -11,7 +11,7 @@ const BottomTabNavigator = createMaterialBottomTabNavigator({
             screen: Portfolio,
             navigationOptions: {
                 tabBarIcon: ({tintColor}) => (
-                    <Icon name="wallet" size={25} color={tintColor}/>
+                    <Icon name="suitcase" size={25} color={tintColor}/>
                 )
             }
         },
