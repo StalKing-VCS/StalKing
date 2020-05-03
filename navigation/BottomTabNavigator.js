@@ -1,9 +1,8 @@
 import React from 'react';
-import {View, Text} from 'react-native';
 import {createMaterialBottomTabNavigator} from 'react-navigation-material-bottom-tabs';
 import Profile from '../screens/Profile';
 import Portfolio from '../screens/Portfolio';
-import Search from "../screens/Search";
+import StackNav from "../screens/SearchStackNav";
 import Icon from "react-native-vector-icons/FontAwesome5";
 
 const BottomTabNavigator = createMaterialBottomTabNavigator({
@@ -16,7 +15,7 @@ const BottomTabNavigator = createMaterialBottomTabNavigator({
             }
         },
         Search: {
-            screen: Search,
+            screen: StackNav,
             navigationOptions: {
                 tabBarIcon: ({tintColor}) => (
                     <Icon name="search" size={25} color={tintColor}/>
