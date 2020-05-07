@@ -1,9 +1,9 @@
 {
-  "name": "stalKing",
-  "displayName": "stalKing",
+  "name": "Stalking",
+  "displayName": "Stalking",
   "expo": {
-    "name": "stalKing",
-    "slug": "stalKing",
+    "name": "Stalking",
+    "slug": "Stalking",
     "version": "1.0.0",
     "platforms": [
       "ios",
